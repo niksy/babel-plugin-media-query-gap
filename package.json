@@ -1,0 +1,45 @@
+{
+  "name": "babel-plugin-media-query-gap",
+  "version": "0.0.0",
+  "description": "Babel plugin for applying gap on max-width/height media queries.",
+  "main": "index.js",
+  "author": "Ivan Nikolić <niksy5@gmail.com> (http://ivannikolic.com)",
+  "license": "MIT",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "eslint '{index,test/*}.js' && istanbul cover _mocha 'test/*.js' && istanbul check-coverage"
+  },
+  "dependencies": {
+    "postcss-value-parser": "^3.3.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.17.0",
+    "eslint": "^3.1.1",
+    "eslint-config-niksy": "^3.0.1",
+    "istanbul": "^0.4.3",
+    "mocha": "^2.5.3",
+    "pify": "^2.3.0"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "keywords": [
+    "babel",
+    "babel-plugin",
+    "gap",
+    "max-width",
+    "media",
+    "mq",
+    "query"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/niksy/babel-plugin-media-query-gap.git"
+  },
+  "bugs": {
+    "url": "https://github.com/niksy/babel-plugin-media-query-gap/issues"
+  },
+  "homepage": "https://github.com/niksy/babel-plugin-media-query-gap#readme"
+}
