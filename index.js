@@ -1,50 +1,6 @@
 'use strict';
 
-const parse = require('postcss-value-parser');
-
-/**
- * @param  {String} str
- *
- * @return {String}
- */
-function transform ( str ) {
-
-	const ast = parse(str);
-
-	ast.walk(( node ) => {
-
-		if ( node.type === 'function' ) {
-
-			const values = node.nodes;
-			const maxQuery = values.some(( item ) => {
-				return /max\-(?:width|height)/.test(item.value);
-			});
-
-			// If we are working with max-width/height query
-			if ( maxQuery ) {
-				values
-
-					// Work only with pixel and em values
-					.filter(( item ) => {
-						const value = parse.unit(item.value);
-						return item.type === 'word' && (value && /px|em/.test(value.unit));
-					})
-
-					// Apply gap
-					.map(( item ) => {
-						const value = parse.unit(item.value);
-						const step = value.unit === 'px' ? 1 : 0.01;
-						item.value = [Number(value.number) - step, value.unit].join('');
-						return item;
-					});
-			}
-
-		}
-
-	});
-
-	return ast.toString();
-}
+const mediaQueryGap = require('media-query-gap');
 
 module.exports = ( opts ) => {
 	const t = opts.types;
@@ -62,8 +18,13 @@ module.exports = ( opts ) => {
 			Identifier: ( path ) => {
 				if ( t.isIdentifier(path.node, { name: 'matchMedia' }) ) {
 					const parent = getParent(path);
-					parent.node.arguments.forEach(( arg ) => {
-						arg.value = transform(arg.value);
+					parent.node.arguments = parent.node.arguments.map(( arg ) => {
+						if ( t.isStringLiteral(arg) ) {
+							return t.stringLiteral(mediaQueryGap(arg.value));
+						} else if ( t.isTemplateLiteral(arg) && arg.quasis.length === 1 ) {
+							return t.stringLiteral(mediaQueryGap(arg.quasis[0].value.raw));
+						}
+						return arg;
 					});
 				}
 			}

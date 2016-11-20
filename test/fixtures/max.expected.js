@@ -15,3 +15,6 @@ window.matchMedia('screen and (max-height:100%)');
 
 global.matchMedia('screen and (max-width:599px)');
 matchMedia('screen and (max-width:599px)');
+
+window.matchMedia('screen and (max-width:599px)');
+window.matchMedia(`screen and (max-width:${ 600 }px)`);
