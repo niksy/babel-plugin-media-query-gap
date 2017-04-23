@@ -14,7 +14,7 @@ function runTest ( testCase, opts ) {
 		})
 	])
 		.then(( res ) => {
-			assert.equal(res[0].trim(), res[1].code.trim());
+			assert.equal(res[1].code.trim(), res[0].trim());
 		});
 }
 
