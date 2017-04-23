@@ -49,5 +49,5 @@ const jackie = /* @media */ 'screen and (max-width:599px)';
 MIT © [Ivan Nikolić](http://ivannikolic.com)
 
 [ci]: https://travis-ci.org/niksy/babel-plugin-media-query-gap
-[ci-img]: https://img.shields.io/travis/niksy/babel-plugin-media-query-gap.svg
+[ci-img]: https://travis-ci.org/niksy/babel-plugin-media-query-gap.svg?branch=master
 [babel-plugins]: http://babeljs.io/docs/plugins/
