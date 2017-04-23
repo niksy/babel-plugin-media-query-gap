@@ -18,14 +18,18 @@ function runTest ( testCase, opts ) {
 		});
 }
 
-it('screen and (max-{width/height}:{value})', function () {
+it('should process "screen and (max-{width/height}:{value})"', function () {
 	return runTest('max', {});
 });
 
-it('screen and (min-{width/height}:{value}) and (max-{width/height}:{value})', function () {
+it('should process "screen and (min-{width/height}:{value}) and (max-{width/height}:{value})"', function () {
 	return runTest('min-max', {});
 });
 
-it('vars', function () {
+it('should not process variables', function () {
 	return runTest('vars', {});
+});
+
+it('should process media query comments', function () {
+	return runTest('comments', {});
 });

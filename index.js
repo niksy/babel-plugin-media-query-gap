@@ -13,6 +13,42 @@ module.exports = ( opts ) => {
 		return getParent(parent);
 	}
 
+	function isMediaQueryComment ( value ) {
+		return value.trim() === '@media';
+	}
+
+	function transformMediaQueryComment ( path ) {
+
+		if (
+			typeof path.node.leadingComments === 'undefined' ||
+			(path.node.leadingComments && path.node.leadingComments.length === 0)
+		) {
+			return;
+		}
+
+		const mediaQueryComments = path.node.leadingComments
+			.filter(( comment ) => {
+				return isMediaQueryComment(comment.value);
+			});
+
+		if ( mediaQueryComments.length !== 0 ) {
+			mediaQueryComments
+				.forEach(() => {
+					if ( t.isStringLiteral(path) ) {
+						path.replaceWith(t.stringLiteral(mediaQueryGap(path.node.value)));
+					} else if ( t.isTemplateLiteral(path) && path.node.quasis.length === 1 ) {
+						path.replaceWith(t.stringLiteral(mediaQueryGap(path.node.quasis[0].value.raw)));
+					}
+				});
+		}
+
+		path.node.leadingComments = path.node.leadingComments
+			.filter(( comment ) => {
+				return !isMediaQueryComment(comment.value);
+			});
+
+	}
+
 	return {
 		visitor: {
 			Identifier: ( path ) => {
@@ -27,7 +63,9 @@ module.exports = ( opts ) => {
 						return arg;
 					});
 				}
-			}
+			},
+			StringLiteral: transformMediaQueryComment,
+			TemplateLiteral: transformMediaQueryComment
 		}
 	};
 };
