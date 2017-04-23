@@ -17,4 +17,4 @@ global.matchMedia('screen and (min-width:600px) and (max-width:738px)');
 matchMedia('screen and (min-width:600px) and (max-width:738px)');
 
 window.matchMedia('screen and (min-width:600px) and (max-width:738px)');
-window.matchMedia(`screen and (min-width:${ 600 }px) and (max-width:${ 739 }px)`);
+window.matchMedia(`screen and (min-width:${600}px) and (max-width:${739}px)`);
