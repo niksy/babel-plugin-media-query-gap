@@ -20,6 +20,7 @@ module.exports = ( opts ) => {
 	function transformMediaQueryComment ( path ) {
 
 		if (
+			path.node.leadingComments === null ||
 			typeof path.node.leadingComments === 'undefined' ||
 			(path.node.leadingComments && path.node.leadingComments.length === 0)
 		) {
