@@ -1,11 +1,11 @@
-var jackie = 'screen and (max-width:599px)';
+var jackie = /* @media _media-query-gap-processed */'screen and (max-width:599px)';
 var lucy = {
-	winnie: 'screen and (max-width:599px)'
+	winnie: /* @media _media-query-gap-processed */'screen and (max-width:599px)'
 };
 
-var daisy = 'screen and (max-width:599px)';
+var daisy = /* @media _media-query-gap-processed */'screen and (max-width:599px)';
 var coco = {
-	sophie: 'screen and (max-width:599px)'
+	sophie: /* @media _media-query-gap-processed */'screen and (max-width:599px)'
 };
 
-var jackie = /* jackie */'screen and (max-width:599px)';
+var jackie = /* @media _media-query-gap-processed */ /* jackie */'screen and (max-width:599px)';

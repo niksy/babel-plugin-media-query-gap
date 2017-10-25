@@ -1,6 +1,7 @@
 'use strict';
 
 const mediaQueryGap = require('media-query-gap');
+const PROCESSED_MEDIA_QUERY_ID = '_media-query-gap-processed';
 
 module.exports = ( opts ) => {
 	const t = opts.types;
@@ -14,7 +15,11 @@ module.exports = ( opts ) => {
 	}
 
 	function isMediaQueryComment ( value ) {
-		return value.trim() === '@media';
+		return value.indexOf('@media') !== -1;
+	}
+
+	function isMediaQueryCommentProcessed ( value ) {
+		return value.indexOf(PROCESSED_MEDIA_QUERY_ID) !== -1;
 	}
 
 	function transformMediaQueryComment ( path ) {
@@ -29,10 +34,11 @@ module.exports = ( opts ) => {
 
 		const mediaQueryComments = path.node.leadingComments
 			.filter(( comment ) => {
-				return isMediaQueryComment(comment.value);
+				return isMediaQueryComment(comment.value) && !isMediaQueryCommentProcessed(comment.value);
 			});
 
 		if ( mediaQueryComments.length !== 0 ) {
+
 			mediaQueryComments
 				.forEach(() => {
 					if ( t.isStringLiteral(path) ) {
@@ -40,13 +46,24 @@ module.exports = ( opts ) => {
 					} else if ( t.isTemplateLiteral(path) && path.node.quasis.length === 1 ) {
 						path.replaceWith(t.stringLiteral(mediaQueryGap(path.node.quasis[0].value.raw)));
 					}
+					path.node.comments = (path.node.comments || []).concat(path.node.leadingComments);
 				});
-		}
 
-		path.node.leadingComments = path.node.leadingComments
-			.filter(( comment ) => {
-				return !isMediaQueryComment(comment.value);
-			});
+			path.node.leadingComments = path.node.leadingComments
+				.map(( comment ) => {
+					if ( isMediaQueryComment(comment.value) ) {
+						const commentValue =
+							[comment.value, PROCESSED_MEDIA_QUERY_ID]
+								.map(( value ) => {
+									return value.trim();
+								})
+								.join(' ');
+						comment.value = ` ${commentValue} `;
+					}
+					return comment;
+				});
+
+		}
 
 	}
 
